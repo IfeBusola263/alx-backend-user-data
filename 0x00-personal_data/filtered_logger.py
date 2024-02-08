@@ -7,6 +7,7 @@ This module implements functions, methods and class that demonstrate
 """
 from typing import List
 import re
+import logging
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -26,7 +27,24 @@ def filter_datum(fields: List[str], redaction: str,
     >>>
     """
     for field in fields:
-        if field in message:
-            message = re.sub(
-                rf'{field}=([^{separator}]+)', f'{field}={redaction}', message)
+        message = re.sub(
+            rf'{field}=([^{separator}]+)', f'{field}={redaction}', message)
     return message
+
+
+class RedactingFormatter(logging.Formatter):
+    """ Redacting Formatter class
+    """
+    REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+    SEPARATOR = ";"
+
+    def __init__(self, fields):
+        super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields
+
+    def format(self, record: logging.LogRecord) -> str:
+        # implementing this classes format method, with the behavior of the
+        # super class format method, which is a logging.Formatter Object
+        rec = super().format(record)
+        return filter_datum(self.fields, self.REDACTION, rec, self.SEPARATOR)
