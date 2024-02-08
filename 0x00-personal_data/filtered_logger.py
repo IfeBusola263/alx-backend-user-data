@@ -14,12 +14,12 @@ import csv
 import datetime
 
 
-file = open('user_data.csv')
-csv_reader = csv.reader(file)
-csv_fields = (next(csv_reader))
+# file = open('user_data.csv')
+# csv_reader = csv.reader(file)
+# csv_fields = (next(csv_reader))
 
-PII_FIELDS: Tuple[str] = tuple(csv_fields[:-3])
-# ("name", "email", "ssn", "password", "phone")
+PII_FIELDS: Tuple[str] = ("name", "email", "ssn", "password", "phone")
+# tuple(csv_fields[:-3])
 
 
 def filter_datum(fields: List[str], redaction: str,
