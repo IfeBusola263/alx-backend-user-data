@@ -5,12 +5,12 @@ This module implements functions, methods and class that demonstrate
 > How to encrypt a password and check the validity of an input password
 > How to authenticate to a database using environment variables
 """
-from typing import List
+from typing import List, Tuple
 import re
 import logging
 
 
-PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+PII_FIELDS: Tuple[str] = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(fields: List[str], redaction: str,
