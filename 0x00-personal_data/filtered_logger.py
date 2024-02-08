@@ -9,6 +9,7 @@ from typing import List, Tuple
 import re
 import logging
 import mysql.connector
+import os
 
 
 PII_FIELDS: Tuple[str] = ("name", "email", "ssn", "password", "phone")
@@ -79,6 +80,27 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-# def get_db() -> mysql.connector.connection.MySQLConnection:
-#     """
-#     Returns an
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    Returns a connection object
+    """
+    env = {
+        'PERSONAL_DATA_DB_USERNAME': 'root',
+        'PERSONAL_DATA_DB_PASSWORD': '',
+        'PERSONAL_DATA_DB_HOST': 'localhost',
+        }
+
+    for key, value in env.items():
+        os.environ.setdefault(key, value)
+
+    db = os.getenv('PERSONAL_DATA_DB_NAME')
+    uname = os.getenv('PERSONAL_DATA_DB_USERNAME')
+    pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD')
+    host = os.getenv('PERSONAL_DATA_DB_HOST')
+
+    connection = mysql.connector.connection(host=host,
+                                            database=db,
+                                            user=uname,
+                                            password=pwd)
+
+    return connection
