@@ -1,0 +1,5 @@
+# Ignore emacs backup files
+*~
+
+# Ignore Python bytecode cache files
+__pycache__/
