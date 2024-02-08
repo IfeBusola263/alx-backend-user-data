@@ -11,7 +11,7 @@ import logging
 import mysql.connector
 
 
-PII_FIELDS: Tuple[str] = ("name", "email", "ssn", "ip", "phone")
+PII_FIELDS: Tuple[str] = ("name", "email", "ssn", "password", "phone")
 # name,email,phone,ssn,password,ip,last_login,user_agent
 
 
