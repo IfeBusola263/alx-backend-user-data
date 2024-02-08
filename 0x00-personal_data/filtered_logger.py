@@ -84,27 +84,15 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     """
     Returns a connection object
     """
-    env = {
-        'PERSONAL_DATA_DB_USERNAME': 'root',
-        'PERSONAL_DATA_DB_PASSWORD': 'root',
-        'PERSONAL_DATA_DB_HOST': 'localhost',
-        }
-
-    # for key, value in env.items():
-    #     os.environ.setdefault(key, value)
-
     db = os.getenv('PERSONAL_DATA_DB_NAME')
     uname = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
     pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
     host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
 
-    print(db, uname, pwd, host)
-    print("-----------------\n")
-
     connection = mysql.connector.connect(host=host,
                                          database=db,
-                                         user=uname)
-                                        # password=pwd)
+                                         user=uname,
+                                         password=pwd)
 
     return connection
 
