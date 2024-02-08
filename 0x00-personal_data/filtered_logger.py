@@ -8,6 +8,7 @@ This module implements functions, methods and class that demonstrate
 from typing import List, Tuple
 import re
 import logging
+import mysql.connector
 
 
 PII_FIELDS: Tuple[str] = ("name", "email", "phone", "ssn", "password")
@@ -42,7 +43,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]) -> None:
+    def __init__(self, fields: List[str]):
         '''
         The first method to be called at the instance of the class.
         '''
@@ -75,3 +76,8 @@ def get_logger() -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
+
+
+# def get_db() -> mysql.connector.connection.MySQLConnection:
+#     """
+#     Returns an 
