@@ -93,15 +93,10 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     # for key, value in env.items():
     #     os.environ.setdefault(key, value)
 
-    # db = os.getenv('PERSONAL_DATA_DB_NAME')
-    # uname = os.getenv('PERSONAL_DATA_DB_USERNAME')
-    # pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD')
-    # host = os.getenv('PERSONAL_DATA_DB_HOST')
-
-    db = os.environ.get('PERSONAL_DATA_DB_NAME')
-    uname = os.environ.get('PERSONAL_DATA_DB_USERNAME', '')
-    pwd = os.environ.get('PERSONAL_DATA_DB_PASSWORD', 'localhost')
-    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'root')
+    db = os.getenv('PERSONAL_DATA_DB_NAME')
+    uname = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
 
     connection = mysql.connector.connect(host=host,
                                          database=db,
