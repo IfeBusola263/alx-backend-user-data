@@ -10,10 +10,16 @@ import re
 import logging
 import mysql.connector
 import os
+import csv
+import datetime
 
 
-PII_FIELDS: Tuple[str] = ("name", "email", "ssn", "password", "phone")
-# name,email,phone,ssn,password,ip,last_login,user_agent
+file = open('user_data.csv')
+csv_reader = csv.reader(file)
+csv_fields = (next(csv_reader))
+
+PII_FIELDS: Tuple[str] = tuple(csv_fields[:-3])
+# ("name", "email", "ssn", "password", "phone")
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -110,16 +116,25 @@ def main() -> None:
     cursor.execute("SELECT * FROM users;")
 
     # store information in a list
-    info = [ row for row in cursor ]
-
-    # close all connections
-    cursor.close
-    db.close()
+    info = [list(zip(csv_fields, row)) for row in cursor]
 
     # get a logger and log the information
     logger = get_logger()
+
     for line in info:
-        logger.info(line)
+        msg = ''
+        for key_val in line:
+            if isinstance(key_val[1], datetime.datetime):
+                val = key_val[1].strftime('%Y-%m-%d %H:%M:%S')
+            else:
+                val = key_val[1]
+            msg = msg + key_val[0] + '=' + val + ';'
+
+        logger.info(msg)
+
+    # close all connections
+    cursor.close()
+    db.close()
 
 
 if __name__ == '__main__':
