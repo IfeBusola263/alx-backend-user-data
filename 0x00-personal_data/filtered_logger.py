@@ -40,9 +40,17 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields):
+        '''
+        The first method to be called at the instance of the class.
+        '''
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        rec = logging.Formatter.format(self, record)
+        """
+        This method formats an instance of a LogRecord with
+        super class format protocol, so as to maintain the format from the
+        log.
+        """
+        rec = super().format(self, record)
         return filter_datum(self.fields, self.REDACTION, rec, self.SEPARATOR)
