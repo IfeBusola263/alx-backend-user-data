@@ -16,8 +16,10 @@ import datetime
 
 # file = open('user_data.csv')
 # csv_reader = csv.reader(file)
-csv_fields = (
-    "name","email","phone","ssn","password","ip","last_login","user_agent")
+csv_fields = [
+    "name", "email", "phone", "ssn", "password",
+    "ip", "last_login", "user_agent",
+    ]
 
 PII_FIELDS: Tuple[str] = ("name", "email", "ssn", "password", "phone")
 # tuple(csv_fields[:-3])
@@ -104,39 +106,39 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     return connection
 
 
-# def main() -> None:
-#     """
-#     This function uses the get_db to get a connection and retreive
-#     the rows in the users table and display each row in a filtered
-#     format.
-#     """
+def main() -> None:
+    """
+    This function uses the get_db to get a connection and retreive
+    the rows in the users table and display each row in a filtered
+    format.
+    """
 
-#     # query database for the information
-#     db = get_db()
-#     cursor = db.cursor()
-#     cursor.execute("SELECT * FROM users;")
+    # query database for the information
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
 
-#     # store information in a list
-#     info = [list(zip(csv_fields, row)) for row in cursor]
+    # store information in a list
+    info = [list(zip(csv_fields, row)) for row in cursor]
 
-#     # get a logger and log the information
-#     logger = get_logger()
+    # get a logger and log the information
+    logger = get_logger()
 
-#     for line in info:
-#         msg = ''
-#         for key_val in line:
-#             if isinstance(key_val[1], datetime.datetime):
-#                 val = key_val[1].strftime('%Y-%m-%d %H:%M:%S')
-#             else:
-#                 val = key_val[1]
-#             msg = msg + key_val[0] + '=' + val + ';'
+    for line in info:
+        msg = ''
+        for key_val in line:
+            if isinstance(key_val[1], datetime.datetime):
+                val = key_val[1].strftime('%Y-%m-%d %H:%M:%S')
+            else:
+                val = key_val[1]
+            msg = msg + key_val[0] + '=' + val + ';'
 
-#         logger.info(msg)
+        logger.info(msg)
 
-#     # close all connections
-#     cursor.close()
-#     db.close()
+    # close all connections
+    cursor.close()
+    db.close()
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
