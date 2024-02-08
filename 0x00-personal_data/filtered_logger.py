@@ -66,7 +66,7 @@ def get_logger() -> logging.Logger:
     """
 
     # create logger, set severity and propagation
-    logger = getLogger('user_data')
+    logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
     logger.propagate = False
 
@@ -98,9 +98,41 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
     host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
 
+    print(db, uname, pwd, host)
+    print("-----------------\n")
+
     connection = mysql.connector.connect(host=host,
                                          database=db,
-                                         user=uname,
-                                         password=pwd)
+                                         user=uname)
+                                        # password=pwd)
 
     return connection
+
+
+def main() -> None:
+    """
+    This function uses the get_db to get a connection and retreive
+    the rows in the users table and display each row in a filtered
+    format.
+    """
+
+    # query database for the information
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+
+    # store information in a list
+    info = [ row for row in cursor ]
+
+    # close all connections
+    cursor.close
+    db.close()
+
+    # get a logger and log the information
+    logger = get_logger()
+    for line in info:
+        logger.info(line)
+
+
+if __name__ == '__main__':
+    main()
