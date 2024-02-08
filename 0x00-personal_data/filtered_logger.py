@@ -28,5 +28,5 @@ def filter_datum(fields: List[str], redaction: str,
     for field in fields:
         if field in message:
             message = re.sub(
-                rf'{field}=([^;]+)', f'{field}={redaction}', message)
+                rf'{field}=([^{separator}]+)', f'{field}={redaction}', message)
     return message
