@@ -72,7 +72,7 @@ def get_logger() -> logging.Logger:
 
     # create console handler and add formatter to handler
     handler = logging.StreamHandler()
-    handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    handler.setFormatter(RedactingFormatter(fields=PII_FIELDS))
 
     # add handler to logger
     logger.addHandler(handler)
@@ -93,10 +93,15 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     # for key, value in env.items():
     #     os.environ.setdefault(key, value)
 
-    db = os.getenv('PERSONAL_DATA_DB_NAME')
-    uname = os.getenv('PERSONAL_DATA_DB_USERNAME')
-    pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD')
-    host = os.getenv('PERSONAL_DATA_DB_HOST')
+    # db = os.getenv('PERSONAL_DATA_DB_NAME')
+    # uname = os.getenv('PERSONAL_DATA_DB_USERNAME')
+    # pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD')
+    # host = os.getenv('PERSONAL_DATA_DB_HOST')
+
+    db = os.environ.get('PERSONAL_DATA_DB_NAME')
+    uname = os.environ.get('PERSONAL_DATA_DB_USERNAME', '')
+    pwd = os.environ.get('PERSONAL_DATA_DB_PASSWORD', 'localhost')
+    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'root')
 
     connection = mysql.connector.connect(host=host,
                                          database=db,
