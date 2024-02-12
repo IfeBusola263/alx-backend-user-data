@@ -12,6 +12,34 @@ import os
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+auth = None
+main_paths = [
+    '/api/v1/status/',
+    '/api/v1/unauthorized/',
+    '/api/v1/forbidden/']
+
+if getenv('AUTH_TYPE') == 'auth':
+    from api.v1.auth.auth import Auth
+    auth = Auth()
+
+
+@app.before_request
+def filter_request():
+    """
+    The request filter checks if an authentication is specified
+    in the request, based on the environment variable. Then checks
+    if the path is a valid one based on 'main_paths'.
+    It then used the 'authorization_header' method of the
+    Auth instance to check for the header 'Authorization' if it is
+    None or not, the same for 'current_user' method of auth.
+    """
+    if auth is not None:
+        if not auth.require_auth(request.path, main_paths):
+            return
+        if auth.authorization_header(request) is None:
+            abort(401)
+        if auth.current_user(request) is None:
+            abort(403)
 
 
 @app.errorhandler(404)
