@@ -18,6 +18,8 @@ class Auth:
             return True
 
         # Make the method slash tolerant
+        # if path[-1] == '*':
+        #     path = path
         if path[-1] != '/':
             path = path + '/'
 
