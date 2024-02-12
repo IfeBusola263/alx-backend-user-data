@@ -14,6 +14,17 @@ class Auth:
         """
         returns True if path is allowed and false otherwise.
         """
+        if path is None or excluded_paths is None or excluded_paths == []:
+            return True
+
+        # Make the method slash tolerant
+        if path[-1] != '/':
+            path = path + '/'
+
+        # check if path is in excluded_paths
+        if path not in excluded_paths:
+            return True
+
         return False
 
     def authorization_header(self, request: request = None) -> str:
