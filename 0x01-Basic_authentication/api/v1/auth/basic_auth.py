@@ -79,10 +79,8 @@ class BasicAuth(Auth):
         if user_pwd is None or not isinstance(user_pwd, str):
             return None
 
-        attr = {'email': user_email, '_password': user_pwd}
-
         # Search for Users data in the storage
-        list_of_all_users = User.search({})
+        list_of_all_users = User.search()
         if len(list_of_all_users) == 0:
             return None
 
