@@ -92,8 +92,10 @@ class BasicAuth(Auth):
             return None
 
         # Validate the password of the user.
-        if user_by_email[0].is_valid_password(user_pwd):
-            return user_by_email[0]
+        for user in user_by_email:
+            if user.is_valid_password(user_pwd):
+                return user
+
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
