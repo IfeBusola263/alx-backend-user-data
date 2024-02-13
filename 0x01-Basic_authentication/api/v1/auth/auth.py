@@ -4,6 +4,7 @@ API Authentication handler to manage access to app resources.
 """
 from flask import request
 from typing import List, TypeVar
+import fnmatch
 
 
 class Auth:
@@ -18,16 +19,15 @@ class Auth:
             return True
 
         # Make the method slash tolerant
-        # if path[-1] == '*':
-        #     path = path
-        if path[-1] != '/':
+        if not path.endswith('/'):
             path = path + '/'
 
         # check if path is in excluded_paths
-        if path not in excluded_paths:
-            return True
+        for route in excluded_paths:
+            if fnmatch.fnmatch(path, route):
+                return False
 
-        return False
+        return True
 
     def authorization_header(self, request: request = None) -> str:
         """
