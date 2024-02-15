@@ -43,11 +43,12 @@ def filter_request():
             abort(401)
 
         # user_auth gets a User Object if authentication is valid
-        user_auth = auth.current_user(request) 
+        user_auth = auth.current_user(request)
         if user_auth is None:
             abort(403)
         # assign the User object to request.current_user
         request.current_user = user_auth
+
 
 @app.errorhandler(404)
 def not_found(error) -> str:
