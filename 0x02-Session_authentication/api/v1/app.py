@@ -16,7 +16,9 @@ auth = None
 main_paths = [
     '/api/v1/status/',
     '/api/v1/unauthorized/',
-    '/api/v1/forbidden/']
+    '/api/v1/forbidden/',
+    '/api/v1/auth_session/login/',
+]
 
 # Get the authentication type
 if getenv('AUTH_TYPE') == 'auth':
@@ -45,7 +47,8 @@ def filter_request():
     if auth is not None:
         if not auth.require_auth(request.path, main_paths):
             return
-        if auth.authorization_header(request) is None:
+        if not auth.authorization_header(
+                request) and not auth.session_cookie(request):
             abort(401)
 
         # user_auth gets a User Object if authentication is valid
