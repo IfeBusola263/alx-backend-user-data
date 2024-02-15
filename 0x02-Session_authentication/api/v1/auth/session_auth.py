@@ -4,6 +4,7 @@ This module is a session authentication module.
 """
 from api.v1.auth.auth import Auth
 from uuid import uuid4
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -25,3 +26,13 @@ class SessionAuth(Auth):
         session_id = str(uuid4())
         self.__class__.user_id_by_session_id[session_id] = user_id
         return session_id
+
+    def user_id_for_session_id(self, session_id: str = None) -> str:
+        """
+        This method returns the a User object, based on the ID.
+        """
+
+        if not session_id and not isinstance(session_id, str):
+            return None
+
+        return self.__class__.user_id_by_session_id.get(session_id)
