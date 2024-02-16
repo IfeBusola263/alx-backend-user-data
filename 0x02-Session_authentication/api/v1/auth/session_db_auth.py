@@ -30,7 +30,7 @@ class SessionDBAuth(SessionExpAuth):
 
     def user_id_for_session_id(self, session_id=None) -> str:
         """
-        Returns the user for a session ID.
+        Returns the user id for a session ID.
         """
         try:
             userIdForSession = UserSession.search({
