@@ -18,8 +18,11 @@ class SessionDBAuth(SessionExpAuth):
         if user_id:
             session_id = super().create_session(user_id)
             if session_id:
-
-                userSession = UserSession(**self.user_id_by_session_id)
+                userSessDict = {
+                    'user_id': user_id,
+                    'session_id': session_id,
+                    }
+                userSession = UserSession(**userSessDict)
                 userSession.save()
                 return session_id
             return None
