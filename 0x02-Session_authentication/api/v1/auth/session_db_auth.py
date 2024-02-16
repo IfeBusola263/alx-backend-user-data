@@ -32,11 +32,18 @@ class SessionDBAuth(SessionExpAuth):
         """
         Returns the user id for a session ID.
         """
+
+        if not session_id:
+            return None
         # try:
         userIdForSession = UserSession.search({
             'session_id': session_id})
-        userIdForSession = userIdForSession[0].to_json()
-        
+
+        if userIdForSession:
+            userIdForSession = userIdForSession[0].to_json()
+        else:
+            return None
+
         # check if time was set, if not return the user_id
         if self.session_duration <= 0:
             return userIdForSession.get('user_id')
