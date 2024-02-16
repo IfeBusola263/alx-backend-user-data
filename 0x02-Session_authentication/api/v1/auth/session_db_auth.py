@@ -32,8 +32,21 @@ class SessionDBAuth(SessionExpAuth):
         try:
             userIdForSession = UserSession.search({
                 'session_id': session_id})
-            userIdForSession = userIdForSession.to_json()
+            userIdForSession = userIdForSession[0].to_json()
+            # check if time was set, if not return the user_id
+            if self.session_duration <= 0:
+                return userIdForSession.get('user_id')
+
+            # get total session time
+            session_time = userIdForSession.to_json().get(
+                'created_at') + timedelta(seconds=self.session_duration)
+
+            if session_time < datetime.now():
+                return None
+
+            # if the session is still valid
             return userIdForSession.get('user_id')
+
         except Exception:
             return None
 
@@ -41,4 +54,16 @@ class SessionDBAuth(SessionExpAuth):
         """
         Method to destroy a session.
         """
-        pass
+        if request is None:
+            return None
+
+        # request cookies is a session id
+        request_cookies = self.session_cookie(request)
+        if not request_cookies:
+            return False
+
+        userIdForSession = UserSession.search({
+                'session_id': session_id})
+        userIdForSession = userIdForSession[0]
+        userIdForSession.remove()
+        return True
