@@ -41,7 +41,7 @@ class SessionDBAuth(SessionExpAuth):
                 return userIdForSession.get('user_id')
 
             # get total session time
-            session_time = userIdForSession.to_json().get(
+            session_time = userIdForSession.get(
                 'created_at') + timedelta(seconds=self.session_duration)
 
             if session_time < datetime.now():
