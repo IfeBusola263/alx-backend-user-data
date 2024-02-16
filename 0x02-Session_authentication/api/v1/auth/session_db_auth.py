@@ -37,11 +37,11 @@ class SessionDBAuth(SessionExpAuth):
             userIdForSession = UserSession.search({
                 'session_id': session_id})
 
-            userIdForSession = userIdForSession[0].to_json()
+            userIdForSessdict = userIdForSession[0].to_json()
 
             # check if time was set, if not return the user_id
             if self.session_duration <= 0:
-                return userIdForSession.get('user_id')
+                return userIdForSessdict.get('user_id')
 
             # get total session time
             session_time = userIdForSession.get(
@@ -51,7 +51,7 @@ class SessionDBAuth(SessionExpAuth):
                 return None
 
             # if the session is still valid
-            return userIdForSession.get('user_id')
+            return userIdForSessdict.get('user_id')
 
         except Exception:
             return None
@@ -70,6 +70,9 @@ class SessionDBAuth(SessionExpAuth):
 
         userIdForSession = UserSession.search({
                 'session_id': session_id})
+
+        if not userIdForSession:
+            return False
         userIdForSession = userIdForSession[0]
         userIdForSession.remove()
         return True
