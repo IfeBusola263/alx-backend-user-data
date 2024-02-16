@@ -32,26 +32,27 @@ class SessionDBAuth(SessionExpAuth):
         """
         Returns the user id for a session ID.
         """
-        try:
-            userIdForSession = UserSession.search({
-                'session_id': session_id})
-            userIdForSession = userIdForSession[0].to_json()
-            # check if time was set, if not return the user_id
-            if self.session_duration <= 0:
-                return userIdForSession.get('user_id')
-
-            # get total session time
-            session_time = userIdForSession.get(
-                'created_at') + timedelta(seconds=self.session_duration)
-
-            if session_time < datetime.now():
-                return None
-
-            # if the session is still valid
+        # try:
+        userIdForSession = UserSession.search({
+            'session_id': session_id})
+        userIdForSession = userIdForSession[0].to_json()
+        
+        # check if time was set, if not return the user_id
+        if self.session_duration <= 0:
             return userIdForSession.get('user_id')
 
-        except Exception:
+        # get total session time
+        session_time = userIdForSession.get(
+            'created_at') + timedelta(seconds=self.session_duration)
+
+        if session_time < datetime.now():
             return None
+
+        # if the session is still valid
+        return userIdForSession.get('user_id')
+
+        # except Exception:
+        #     return None
 
     def destroy_session(self, request=None) -> bool:
         """
