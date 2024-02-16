@@ -4,6 +4,7 @@ This module houses the Session storage.
 """
 from api.v1.auth.session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
+from datetime import timedelta, datetime
 
 
 class SessionDBAuth(SessionExpAuth):
@@ -44,8 +45,9 @@ class SessionDBAuth(SessionExpAuth):
                 return userIdForSessdict.get('user_id')
 
             # get total session time
-            session_time = userIdForSession.get(
-                'created_at') + timedelta(seconds=self.session_duration)
+            userObj = userIdForSession[0]
+            session_time = getattr(userObj, 'created_at') + timedelta(
+                seconds=self.session_duration)
 
             if session_time < datetime.now():
                 return None
