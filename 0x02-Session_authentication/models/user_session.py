@@ -16,6 +16,6 @@ class UserSession(Base):
         This is the first method that runs after the instace of
         the class is created.
         """
-        # super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.user_id: str = kwargs.get('user_id')
         self.session_id: str = kwargs.get('session_id')
