@@ -3,7 +3,7 @@
 This is an authentication module.
 """
 
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from typing import TypeVar
 from user import User
@@ -37,3 +37,15 @@ class Auth:
             raise ValueError(f'User {email} already exists')
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """
+        This method checks if a user is logging in with valid credentials.
+        Returns True if the credentials are right and False otherwise.
+        """
+        try:
+            existing_user = self._db.find_user_by(email=email)
+            return checkpw(
+                bytes(password, 'utf-8'), existing_user.hashed_password)
+        except NoResultFound:
+            return False
