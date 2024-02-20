@@ -48,7 +48,7 @@ class DB:
             return user
         return None
 
-    def find_user_by(self, **kwargs: Dict[str, str]) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         This method finds a user based on the kwargs parameters passed, and
         returns the user.
