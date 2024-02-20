@@ -40,17 +40,14 @@ class DB:
         object.
         """
         if email and hashed_password:
-            # user = User()
-            # user.email = email
-            # user.hashed_password = hashed_password
-            user = User(email=email, hashed_password=str(hashed_password))
+            user = User(email=email, hashed_password=hashed_password)
             session = self._session
             session.add(user)
             session.commit()
-            # session.close()
+
             return user
 
-    def find_user_by(self, **kwargs: Dict) -> TypeVar('User'):
+    def find_user_by(self, **kwargs: Dict[str, str]) -> TypeVar('User'):
         """
         This method finds a user based on the kwargs parameters passed, and
         returns the user.
@@ -67,7 +64,7 @@ class DB:
         except (NoResultFound, InvalidRequestError) as err:
             raise err
 
-    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+    def update_user(self, user_id: int, **kwargs: Dict[str, str]) -> None:
         """
         This method updates a user and returns None on success. If the
         argument passed does not correspond in type, to the users's
