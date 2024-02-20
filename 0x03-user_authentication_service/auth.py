@@ -92,3 +92,36 @@ class Auth:
         """
         self._db.update_user(user_id, session_id=None)
         return None
+
+    def get_reset_password_token(self, email: str) -> str:
+        """
+        This method sets the reset_token attribute of the user in
+        the database.
+        """
+        if email:
+            try:
+                user = self._db.find_user_by(email=email)
+                reset_token = _generate_uuid()
+                self._db.update_user(user.id, reset_token=reset_token)
+                return reset_token
+            except NoResultFound:
+                raise ValueError
+
+        return None
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """
+        This method updates the user's password, provided the given
+        credentials reset_token and password are accurate, based on the
+        database values.
+        Returns None.
+        """
+        if reset_token:
+            try:
+                user = self._db.find_user_by(reset_token=reset_token)
+                hashed_password = _hash_password(password)
+                self._db.update_user(
+                    user.id, hashed_password=hashed_password, reset_token=None)
+                return None
+            except NoResultFound:
+                raise ValueError
