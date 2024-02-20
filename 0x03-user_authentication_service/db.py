@@ -34,7 +34,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
         This method creates a user, saves it and returns the user
         object.
@@ -48,7 +48,7 @@ class DB:
             return user
         return None
 
-    def find_user_by(self, **kwargs: Dict[str, str]) -> TypeVar('User'):
+    def find_user_by(self, **kwargs: Dict[str, str]) -> User:
         """
         This method finds a user based on the kwargs parameters passed, and
         returns the user.
