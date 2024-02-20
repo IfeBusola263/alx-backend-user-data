@@ -65,21 +65,21 @@ class DB:
         except (NoResultFound, InvalidRequestError) as err:
             raise err
 
-    def update_user(self, user_id: int, **kwargs: Dict[str, str]) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         This method updates a user and returns None on success. If the
         argument passed does not correspond in type, to the users's
         attribute, a value error is raised.
         """
 
-        user = self.find_user_by(id=user_id)
-
-        if user:
-            try:
-                for key in kwargs:
+        try:
+            user = self.find_user_by(id=user_id)
+            for key in kwargs:
+                if hasattr(user, key):
                     setattr(user, key, kwargs[key])
-                session = self._session
-                session.commit()
-                return None
-            except ValueError as err:
-                raise err
+                    session = self._session
+                    session.commit()
+                    return None
+                raise ValueError
+        except NoResultFound:
+            raise ValueError
