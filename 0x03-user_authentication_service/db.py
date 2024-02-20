@@ -39,12 +39,11 @@ class DB:
         This method creates a user, saves it and returns the user
         object.
         """
-        if email and isinstance(
-                email, str) and hashed_password and isinstance(
-                    hashed_password, str):
-            user = User()
-            user.email = email
-            user.hashed_password = hashed_password
+        if email and hashed_password:
+            # user = User()
+            # user.email = email
+            # user.hashed_password = hashed_password
+            user = User(email=email, hashed_password=hashed_password)
             session = self._session
             session.add(user)
             session.commit()
