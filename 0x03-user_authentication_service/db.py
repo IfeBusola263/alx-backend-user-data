@@ -43,7 +43,7 @@ class DB:
             # user = User()
             # user.email = email
             # user.hashed_password = hashed_password
-            user = User(email=email, hashed_password=hashed_password)
+            user = User(email=email, hashed_password=str(hashed_password))
             session = self._session
             session.add(user)
             session.commit()
