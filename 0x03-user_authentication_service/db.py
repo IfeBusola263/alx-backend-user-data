@@ -39,13 +39,14 @@ class DB:
         This method creates a user, saves it and returns the user
         object.
         """
-        user = User()
-        user.email = email
-        user.hashed_password = hashed_password
-        session = self._session
-        session.add(user)
-        session.commit()
-        return user
+        if email and hashed_password:
+            user = User()
+            user.email = email
+            user.hashed_password = hashed_password
+            session = self._session
+            session.add(user)
+            session.commit()
+            return user
 
     def find_user_by(self, **kwargs: Dict) -> TypeVar('User'):
         """
