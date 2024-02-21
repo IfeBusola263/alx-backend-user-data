@@ -79,9 +79,10 @@ class DB:
             for key in kwargs:
                 if hasattr(user, key):
                     setattr(user, key, kwargs[key])
-                    session = self._session
-                    session.commit()
-                    return None
-                raise ValueError
+                else:
+                    raise ValueError
+            session = self._session
+            session.commit()
+            return None
         except NoResultFound:
             raise ValueError
