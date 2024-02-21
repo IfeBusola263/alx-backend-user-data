@@ -5,7 +5,7 @@ This is an authentication module.
 
 from bcrypt import hashpw, gensalt, checkpw
 from db import DB
-from typing import TypeVar, Union, Any
+from typing import TypeVar, Union
 from user import User
 from uuid import uuid4
 from sqlalchemy.orm.exc import NoResultFound
@@ -109,7 +109,7 @@ class Auth:
 
         return None
 
-    def update_password(self, reset_token: str, password: str) -> Any:
+    def update_password(self, reset_token: str, password: str):
         """
         This method updates the user's password, provided the given
         credentials reset_token and password are accurate, based on the
