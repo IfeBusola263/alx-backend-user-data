@@ -109,7 +109,7 @@ class Auth:
 
         return None
 
-    def update_password(self, reset_token: str, password: str):
+    def update_password(self, reset_token: str, password: str) -> None:
         """
         This method updates the user's password, provided the given
         credentials reset_token and password are accurate, based on the
@@ -125,3 +125,5 @@ class Auth:
                 # return None
             except NoResultFound:
                 raise ValueError
+            except ValueError as err:
+                raise err
